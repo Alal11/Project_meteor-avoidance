@@ -51,11 +51,13 @@ star = pygame.image.load('star.png')
 star = pygame.transform.scale(star, (20, 20))  # 유성 크기 설정
 recStar = player.get_rect()
 # 5. 기타
+clock=pygame.time.Clock()
 
 
 #### 반복 ####
 while isActive:
     # 1. 화면 지움
+    SCREEN.fill((0,0,0))  # 로켓 잔상 제거
     # 2. 이벤트 처리
     eventProcess()
     # 3. 플레이어 이동
@@ -66,5 +68,6 @@ while isActive:
     # 6. text 업데이트
     # 7. 화면 경신
     pygame.display.flip()
+    clock.tick(100)  # 로켓 동작 시간 느리게
 #### 반복 ####
 
