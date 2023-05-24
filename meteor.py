@@ -20,10 +20,9 @@ def eventProcess():
 
 
 def movePlayer():
-    SCREEN.blit(player, recPlayer)
-
-    recPlayer.x += move.x
-    recPlayer.y += move.y
+    if not isGameOver:
+        recPlayer.x += move.x
+        recPlayer.y += move.y
 
     # 로켓이 창을 넘어가지 않도록 설정
     if recPlayer.x < 0:
@@ -50,6 +49,8 @@ def timeDelay():  # 유성 속도 조절
 
 
 def makeStar():  # 유성 랜덤으로 떨어지게 설정
+    if isGameOver:
+        return
     if timeDelay():
         idex = random.randint(0, len(star) - 1)
         if recStar[idex].y == -1:
@@ -62,8 +63,8 @@ def moveStar():
     for i in range(len(star)):
         if recStar[i].y == -1:
             continue
-
-        recStar[i].y += 1
+        if not isGameOver:
+            recStar[i].y += 1
         if recStar[i].y > SCREEN_HEIGHT:
             recStar[i].y = 0
 
