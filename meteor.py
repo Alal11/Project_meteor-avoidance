@@ -41,25 +41,26 @@ def movePlayer():
 
 def timeDelay():  # 유성 속도 조절
     global time_delay
-    if time_delay>7:
-        time_delay=0
+    if time_delay > 7:
+        time_delay = 0
         return True
 
-    time_delay+=1
+    time_delay += 1
     return False
+
 
 def makeStar():  # 유성 랜덤으로 떨어지게 설정
     if timeDelay():
-        idex=random.randint(0,len(star)-1)
-        if recStar[idex].y==-1:
-            recStar[idex].x=random.randint(0, SCREEN_WIDTH)
-            recStar[idex].y=0
+        idex = random.randint(0, len(star) - 1)
+        if recStar[idex].y == -1:
+            recStar[idex].x = random.randint(0, SCREEN_WIDTH)
+            recStar[idex].y = 0
 
 
 def moveStar():
     makeStar()
     for i in range(len(star)):
-        if recStar[i].y==-1:
+        if recStar[i].y == -1:
             continue
 
         recStar[i].y += 1
@@ -69,13 +70,24 @@ def moveStar():
         SCREEN.blit(star[i], recStar[i])
 
 
-def CheckCollision():  # 충돌 확인 기능
+def CheckCollision():  # 충돌 확인 기능 + 스코어
+    global score, isGameOver
+    if isGameOver:
+        return
+
     for rec in recStar:
-        if rec.y==-1:
+        if rec.y == -1:
             continue
-        if rec.top<recPlayer.bottom and recPlayer.top<rec.bottom and rec.left<recPlayer.right and recPlayer.left<rec.right:
+        if rec.top < recPlayer.bottom and recPlayer.top < rec.bottom and rec.left < recPlayer.right and recPlayer.left < rec.right:
             print('충돌')
+            isGameOver = True
             break
+    score += 1
+
+
+def setText():  # 스코어 출력 기능
+    mFont = pygame.font.SysFont("arial", 20, True, False)
+    SCREEN.blit(mFont.render(f'score : {score}', True, 'green'), (10, 10, 0, 0))
 
 
 # 1. 변수 초기화
@@ -83,7 +95,9 @@ isActive = True
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 move = Rect(0, 0, 0, 0)
-time_delay=0
+time_delay = 0
+score = 0
+isGameOver = False
 
 # 2. 스크린 설정
 pygame.init()  # gygame 라이브러리를 제일 처음 사용하기 위한 동작
@@ -103,7 +117,7 @@ recStar = [None for i in range(len(star))]
 for i in range(len(star)):
     star[i] = pygame.transform.scale(star[i], (20, 20))  # 유성 크기 설정
     recStar[i] = player.get_rect()
-    recStar[i].y=-1
+    recStar[i].y = -1
 
 # 5. 기타
 clock = pygame.time.Clock()  # 객체에 시간을 줌
@@ -121,6 +135,7 @@ while isActive:
     # 5. 충돌 확인
     CheckCollision()
     # 6. text 업데이트
+    setText()
     # 7. 화면 경신
     pygame.display.flip()
     clock.tick(100)  # 로켓 동작 시간 느리게
