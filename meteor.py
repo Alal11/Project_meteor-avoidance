@@ -22,6 +22,19 @@ def movePlayer():
     recPlayer.x+=move.x
     recPlayer.y+=move.y
 
+    # 로켓이 창을 넘어가지 않도록 설정
+    if recPlayer.x<0:
+        recPlayer.x=0
+    if recPlayer.x>SCREEN_WIDHT-recPlayer.width:
+        recPlayer.x=SCREEN_WIDHT-recPlayer.width
+
+    if recPlayer.y<0:
+        recPlayer.y=0
+    if recPlayer.y>SCREEN_HEIGHT-recPlayer.height:
+        recPlayer.y=SCREEN_HEIGHT-recPlayer.height
+
+    SCREEN.blit(player,recPlayer)
+
 
 
 def moveStar():
@@ -51,13 +64,13 @@ star = pygame.image.load('star.png')
 star = pygame.transform.scale(star, (20, 20))  # 유성 크기 설정
 recStar = player.get_rect()
 # 5. 기타
-clock=pygame.time.Clock()
+clock=pygame.time.Clock()  # 객체에 시간을 줌
 
 
 #### 반복 ####
 while isActive:
     # 1. 화면 지움
-    SCREEN.fill((0,0,0))  # 로켓 잔상 제거
+    SCREEN.fill((0,0,0))  # 로켓 잔상 제거 (스크린을 검정색으로 칠함)
     # 2. 이벤트 처리
     eventProcess()
     # 3. 플레이어 이동
