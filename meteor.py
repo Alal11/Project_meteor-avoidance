@@ -69,6 +69,15 @@ def moveStar():
         SCREEN.blit(star[i], recStar[i])
 
 
+def CheckCollision():  # 충돌 확인 기능
+    for rec in recStar:
+        if rec.y==-1:
+            continue
+        if rec.top<recPlayer.bottom and recPlayer.top<rec.bottom and rec.left<recPlayer.right and recPlayer.left<rec.right:
+            print('충돌')
+            break
+
+
 # 1. 변수 초기화
 isActive = True
 SCREEN_WIDTH = 400
@@ -110,6 +119,7 @@ while isActive:
     # 4. 유성 생성 및 이동
     moveStar()
     # 5. 충돌 확인
+    CheckCollision()
     # 6. text 업데이트
     # 7. 화면 경신
     pygame.display.flip()
